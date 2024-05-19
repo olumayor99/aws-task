@@ -36,6 +36,7 @@ jobs:
           docker push olumayor99/doyenify-devops
 
   Deploy_Infrastructure:
+    needs: [Build_and_Push_Docker_Image_to_DockerHub]
     runs-on: ubuntu-latest
     
     steps:
@@ -45,7 +46,7 @@ jobs:
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
       with:
-        terraform_version: 1.1.7
+        terraform_version: 1.8
 
     - name: Inititialize Infra Code
       run: terraform -chdir=Infra init -upgrade
