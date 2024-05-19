@@ -4,11 +4,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.31.0"
+      version = ">= 5.50.0"
     }
     kubectl = {
       source  = "alekc/kubectl"
-      version = ">= 2.0.2"
+      version = ">= 2.0.4"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -38,7 +38,6 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project     = "Test"
       Environment = "Dev"
     }
   }
