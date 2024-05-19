@@ -22,7 +22,7 @@ terraform {
 
   backend "s3" {
     bucket         = "olatest-logger-lambda"
-    key            = "terraform/deployment/terraform_aws.tfstate"
+    key            = "terraform/aws/deployment.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraform-s3-backend-locking"
     encrypt        = true
@@ -35,13 +35,10 @@ data "aws_eks_cluster" "cluster" {
 
 provider "aws" {
   region = var.aws_region
-  # access_key = "AWS-ACCESS-KEY"
-  # secret_key = "AWS-SECRET"
 
   default_tags {
     tags = {
       Project     = "Test"
-      Owner       = "Gredenskiy"
       Environment = "Dev"
     }
   }
@@ -55,7 +52,7 @@ provider "kubernetes" {
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
-    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.cluster.name]
+    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.cluster.name, "--region", var.aws_region]
   }
 }
 
@@ -67,7 +64,7 @@ provider "helm" {
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.cluster.name]
+      args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.cluster.name, "--region", var.aws_region]
     }
   }
 }
